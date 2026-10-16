@@ -40,7 +40,21 @@ def is_strong_password(password, min_length=8):
     """Return True if the password has at least `min_length` characters and
     contains at least one uppercase letter, one lowercase letter and one digit."""
     # TODO: loop over the characters with a flag per kind; .isupper() .islower() .isdigit()
-    pass
+    if len(password) < min_length:
+        return False
+
+    has_upper = False
+    has_lower = False
+    has_digit = False
+    for char in password:
+        if char.isupper():
+            has_upper = True
+        elif char.islower():
+            has_lower = True
+        elif char.isdigit():
+            has_digit = True
+
+    return has_upper and has_lower and has_digit
 
 
 def is_valid_status_code(code):
@@ -56,4 +70,7 @@ def all_pass(value, *checks):
     Example: all_pass("TC-001", is_valid_test_id, lambda s: s.endswith("1"))
     """
     # TODO: loop over `checks`; return False as soon as one fails; return True after the loop
-    pass
+    for check in checks:
+        if not check(value):
+            return False
+    return True
