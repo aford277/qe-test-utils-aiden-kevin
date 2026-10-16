@@ -11,7 +11,9 @@ def sort_cases(cases, field, reverse=False):
 def slowest(cases):
     """Return the case with the largest 'duration', or None if the list is empty."""
     # TODO: guard the empty list first; then max(..., key=lambda ...)
-    pass
+    if not cases:
+        return None
+    return max(cases, key=lambda case: case["duration"])
 
 
 def count_by(cases, field):
