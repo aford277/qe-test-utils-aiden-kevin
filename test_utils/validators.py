@@ -26,7 +26,14 @@ def is_valid_email(email):
     and a domain that contains a '.' but does not start or end with one.
     """
     # TODO: early `return False` checks first (space, count of '@'), then split('@')
-    pass
+    if " " in email or email.count("@") != 1:
+        return False
+    
+    local, domain = email.split("@")
+    if not local or "." not in domain or domain.startswith(".") or domain.endswith("."):
+        return False
+
+    return True
 
 
 def is_strong_password(password, min_length=8):
