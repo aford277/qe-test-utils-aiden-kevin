@@ -17,10 +17,25 @@ def build_demo_report(count=6, seed=7):
     # TODO (Milestone 5): cases = generate_test_cases(count, seed=seed); use slowest(), count_by(),
     #   sorted(counts) for the alphabetical priority names, and sort_cases(..., reverse=True).
     #   Build a list `lines`, then return "\n".join(lines).
-    pass
+    cases = generate_test_cases(count, seed=seed)
+    lines = ["TEST DATA REPORT", f"Total: {count}"]
+
+    slow = slowest(cases)
+    if slow:
+        lines.append(f"Slowest: {slow['id']} ({slow['duration']:.2f} s)")
+    else:
+        lines.append("Slowest None (0.00 s)")
+
+    counts = count_by(cases, "priority")
+    priority_parts = [f"{p}={counts[p]}" for p in sorted(counts)]
+    lines.append(f"By priority: {', '.join(priority_parts)}")
+
+    sorted_case_list = sort_cases(cases, "duration", reverse=True)
+    for c in sorted_case_list:
+        lines.append(f"{c['id']} | {c['priority']} | {c['status']} | {c['duration']:.2f} s")
+
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":
     print(build_demo_report())
-
-    # Random comment to add new branch to github
