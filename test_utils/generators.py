@@ -11,13 +11,25 @@ STATUSES = ("New", "Passed", "Failed")
 def generate_username(prefix="user", length=4, seed=None):
     """Return a username like 'user4821': prefix followed by `length` random digits."""
     # TODO: rng = random.Random(seed); join rng.choice(string.digits) `length` times
-    pass
+    rng = random.Random(seed)
+    digits = "".join(rng.choice(string.digits) for _ in range(length))
+    return f"{prefix}{digits}"
 
 
 def generate_usernames(count, seed=None):
     """Return a list of `count` UNIQUE usernames like 'user4821' (count must be 9000 or less)."""
     # TODO: rng + a list + a set `seen`; a while loop until you have `count` unique names
-    pass
+    rng = random.Random(seed)
+    names = []
+    seen = set()
+    while len(names) < count:
+        sub_seed = rng.randint(0, 1000000)
+        name = generate_username(seed = sub_seed)
+        if name not in seen:
+            seen.add(name)
+            names.append(name)
+    return names
+
 
 
 def generate_password(length=12, seed=None):
@@ -25,13 +37,24 @@ def generate_password(length=12, seed=None):
     that always contains an uppercase letter, a lowercase letter and a digit.
     FOR TEST DATA ONLY: random is not secure."""
     # TODO: rng; start with one upper, one lower, one digit; fill up with a loop; rng.shuffle; join
-    pass
+    rng = random.Random(seed)
+    chars = [
+        rng.choice(string.ascii_uppercase),
+        rng.choice(string.ascii_lowercase),
+        rng.choice(string.digits)
+    ]
+    all_chars = string.ascii_letters + string.digits
+    while len(chars) < length:
+        chars.append(rng.choice(all_chars))
+    rng.shuffle(chars)
+    return "".join(chars)
 
 
 def generate_test_id(number, prefix="TC", digits=3):
     """Return a zero-padded test ID: generate_test_id(7) -> 'TC-007'."""
     # TODO: str(number), then pad with '0' * (digits - len(text))
-    pass
+    text = str(number)
+    return prefix + "-" + "0" * (digits - len(text)) + text
 
 
 def make_test_case(test_id, name, **options):
